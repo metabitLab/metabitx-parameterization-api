@@ -115,7 +115,7 @@ export class APIPipeline extends Stack {
     // Beta us-east-2
 
     const betaUsEast2Stage = new APIStage(this, 'beta-us-east-2', {
-      env: { account: '801328487475', region: 'us-east-2' },
+      env: { account: '223020304713', region: 'us-west-1' },
       provisionedConcurrency: 2,
       internalApiKey: internalApiKey.secretValue.toString(),
       stage: STAGE.BETA,
