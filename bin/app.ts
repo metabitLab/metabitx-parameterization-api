@@ -47,7 +47,7 @@ export class APIPipeline extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const code = CodePipelineSource.gitHub('Uniswap/uniswapx-parameterization-api', 'main', {
+    const code = CodePipelineSource.gitHub('metabitLab/metabitx-parameterization-api', 'main', {
       authentication: SecretValue.secretsManager('github-token-2'),
     });
 
@@ -100,21 +100,21 @@ export class APIPipeline extends Stack {
     });
 
     const urlSecrets = sm.Secret.fromSecretAttributes(this, 'urlSecrets', {
-      secretCompleteArn: 'arn:aws:secretsmanager:us-east-2:644039819003:secret:gouda-service-api-xCINOs',
+      secretCompleteArn: 'arn:aws:secretsmanager:us-west-1:223020304713:secret:gouda-service-api-xCINOs',
     });
 
     const rfqWebhookConfig = sm.Secret.fromSecretAttributes(this, 'RfqConfig', {
-      secretCompleteArn: 'arn:aws:secretsmanager:us-east-2:644039819003:secret:rfq-webhook-config-sy04bH',
+      secretCompleteArn: 'arn:aws:secretsmanager:us-west-1:223020304713:secret:rfq-webhook-config-sy04bH',
     });
 
     const internalApiKey = sm.Secret.fromSecretAttributes(this, 'internal-api-key', {
       secretCompleteArn:
-        'arn:aws:secretsmanager:us-east-2:644039819003:secret:gouda-parameterization-api-internal-api-key-uw4sIa',
+        'arn:aws:secretsmanager:us-west-1:223020304713:secret:gouda-parameterization-api-internal-api-key-uw4sIa',
     });
 
     // Beta us-east-2
 
-    const betaUsEast2Stage = new APIStage(this, 'beta-us-east-2', {
+    const betaUsEast2Stage = new APIStage(this, 'beta-us-west-1', {
       env: { account: '223020304713', region: 'us-west-1' },
       provisionedConcurrency: 2,
       internalApiKey: internalApiKey.secretValue.toString(),
@@ -122,10 +122,10 @@ export class APIPipeline extends Stack {
       envVars: {
         RFQ_WEBHOOK_CONFIG: rfqWebhookConfig.secretValue.toString(),
         ORDER_SERVICE_URL: urlSecrets.secretValueFromJson('GOUDA_SERVICE_BETA').toString(),
-        FILL_LOG_SENDER_ACCOUNT: '321377678687',
-        ORDER_LOG_SENDER_ACCOUNT: '321377678687',
-        URA_ACCOUNT: '665191769009',
-        BOT_ACCOUNT: '800035746608',
+        FILL_LOG_SENDER_ACCOUNT: '223020304713',
+        ORDER_LOG_SENDER_ACCOUNT: '223020304713',
+        URA_ACCOUNT: '223020304713',
+        BOT_ACCOUNT: '223020304713',
       },
     });
 
@@ -134,7 +134,7 @@ export class APIPipeline extends Stack {
     this.addIntegTests(code, betaUsEast2Stage, betaUsEast2AppStage, STAGE.BETA);
 
     // Prod us-east-2
-    const prodUsEast2Stage = new APIStage(this, 'prod-us-east-2', {
+    const prodUsEast2Stage = new APIStage(this, 'prod-us-west-1', {
       env: { account: '223020304713', region: 'us-west-1' },
       provisionedConcurrency: 70,
       internalApiKey: internalApiKey.secretValue.toString(),
@@ -142,10 +142,10 @@ export class APIPipeline extends Stack {
       envVars: {
         RFQ_WEBHOOK_CONFIG: rfqWebhookConfig.secretValue.toString(),
         ORDER_SERVICE_URL: urlSecrets.secretValueFromJson('GOUDA_SERVICE_PROD').toString(),
-        FILL_LOG_SENDER_ACCOUNT: '316116520258',
-        ORDER_LOG_SENDER_ACCOUNT: '316116520258',
-        URA_ACCOUNT: '652077092967',
-        BOT_ACCOUNT: '456809954954',
+        FILL_LOG_SENDER_ACCOUNT: '223020304713',
+        ORDER_LOG_SENDER_ACCOUNT: '223020304713',
+        URA_ACCOUNT: '223020304713',
+        BOT_ACCOUNT: '223020304713',
       },
       stage: STAGE.PROD,
     });
